@@ -30,6 +30,12 @@ To use this server with the [Claude Desktop app](https://claude.ai/download), ad
 
 After updating the config, restart Claude Desktop.
 
+## Manual configuration for Cursor
+
+This MCP can also be used in cursor with a similar configuration from above added to your [Cursor](https://www.cursor.com/) global environment or to individual projects.
+
+Examples [here](https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers)
+
 ## Local development
 
 ### Clone the repo (or your fork)
@@ -104,3 +110,31 @@ This MCP provides the following tools for interacting with DevHub CMS:
 ## Usage with LLMs
 
 This MCP is designed to be used with Large Language Models that support the Model Context Protocol. It allows LLMs to manage content in DevHub CMS without needing direct API access integrated into the LLM natively.
+
+## Testing
+
+This package includes a test suite with mocked requests to the DevHub API, allowing you to test the functionality without making actual API calls.
+
+### Running Tests
+
+To run the tests, first install the package with test dependencies:
+
+```bash
+uv pip install -e ".[test]"
+```
+
+Run the tests with pytest:
+
+```bash
+pytest
+```
+
+For more detailed output and test coverage information:
+
+```bash
+pytest -v --cov=devhub_cms_mcp
+```
+
+### Test Structure
+
+- `tests/devhub_cms_mcp/test_mcp_integration.py`: Tests for MCP integration endpoints

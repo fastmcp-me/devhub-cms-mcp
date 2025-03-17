@@ -10,10 +10,14 @@ mcp = FastMCP(
     "DevHub CMS MCP",
     description="Integration with DevHub CMS to manage content")
 
-devhub_api = OAuth1Session(
-    os.environ['DEVHUB_API_KEY'],
-    client_secret=os.environ['DEVHUB_API_SECRET'])
-base_url = '{}/api/v2/'.format(os.environ['DEVHUB_BASE_URL'])
+
+def get_client():
+    """Get DevHub API client and base_url."""
+    client = OAuth1Session(
+        os.environ['DEVHUB_API_KEY'],
+        client_secret=os.environ['DEVHUB_API_SECRET'])
+    base_url = '{}/api/v2/'.format(os.environ['DEVHUB_BASE_URL'])
+    return client, base_url
 
 
 @mcp.tool()
@@ -35,7 +39,8 @@ def get_hours_of_operation(location_id: int, hours_type: str = 'primary') -> lis
         location_id: DevHub Location ID
         hours_type: Defaults to 'primary' unless the user specifies a different type
     """
-    r = devhub_api.get('{}locations/{}'.format(base_url, location_id))
+    client, base_url = get_client()
+    r = client.get('{}locations/{}'.format(base_url, location_id))
     content = json.loads(r.content)
     return content['hours_by_type'].get(hours_type, [])
 
@@ -60,7 +65,8 @@ def update_hours(location_id: int, new_hours: list, hours_type: str = 'primary')
         new_hours: Structured format of the new hours
         hours_type: Defaults to 'primary' unless the user specifies a different type
     """
-    r = devhub_api.put(
+    client, base_url = get_client()
+    r = client.put(
         '{}locations/{}/'.format(base_url, location_id),
         json={
             'hours': [
@@ -85,6 +91,7 @@ def upload_image(base64_image_content: str, filename: str) -> str:
         base64_image_content: Base 64 encoded content of the image file
         filename: Filename including the extension
     """
+    client, base_url = get_client()
     payload = {
         'type': 'image',
         'upload': {
@@ -92,7 +99,7 @@ def upload_image(base64_image_content: str, filename: str) -> str:
             'filename': filename,
         }
     }
-    r = devhub_api.post(
+    r = client.post(
         '{}images/'.format(base_url),
         json=payload,
     )
@@ -110,7 +117,8 @@ def get_blog_post(post_id: int) -> str:
     Args:
         post_id: Blog post id
     """
-    r = devhub_api.get('{}posts/{}/'.format(base_url, post_id))
+    client, base_url = get_client()
+    r = client.get('{}posts/{}/'.format(base_url, post_id))
     post = r.json()
     return f"""
 Post ID: {post['id']}
@@ -131,11 +139,13 @@ def create_blog_post(site_id: int, title: str, content: str) -> str:
         title: Blog post title
         content: HTML content of blog post. Should not include a <h1> tag, only h2+
     """
-    payload = {}
-    payload['site_id'] = site_id
-    payload['content'] = content
-    payload['title'] = title
-    r = devhub_api.post(
+    client, base_url = get_client()
+    payload = {
+        'content': content,
+        'site_id': site_id,
+        'title': title,
+    }
+    r = client.post(
         '{}posts/'.format(base_url),
         json=payload,
     )
@@ -159,12 +169,13 @@ def update_blog_post(post_id: int, title: str = None, content: str = None) -> st
         title: Blog post title
         content: HTML content of blog post. Should not include a <h1> tag, only h2+
     """
+    client, base_url = get_client()
     payload = {}
     if content:
         payload['content'] = content
     if title:
         payload['title'] = title
-    r = devhub_api.put(
+    r = client.put(
         '{}posts/{}/'.format(base_url, post_id),
         json=payload,
     )
@@ -188,7 +199,8 @@ def get_nearest_location(business_id: int, latitude: float, longitude: float) ->
         latitude: Latitude of the location
         longitude: Longitude of the location
     """
-    r = devhub_api.get('{}locations/'.format(base_url), params={
+    client, base_url = get_client()
+    r = client.get('{}locations/'.format(base_url), params={
         'business_id': business_id,
         'near_lat': latitude,
         'near_lon': longitude,
