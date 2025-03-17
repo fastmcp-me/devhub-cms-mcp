@@ -4,16 +4,37 @@ A Model Context Protocol (MCP) integration for managing content in the DevHub CM
 
 ## Installation
 
-The easiest way to install this package is using the [uv](https://github.com/astral-sh/uv) package manager:
+You will need the [uv](https://github.com/astral-sh/uv) package manager installed on your local system.
 
-```bash
-uv install devhub-cms-mcp
+### Clone the repo
+
+```
+git clone git@github.com:devhub/devhub-cms-mcp.git
 ```
 
-You can also install it using pip:
+### Manual configuration of Claude Desktop
 
-```bash
-pip install devhub-cms-mcp
+To use this server with the Claude Desktop app, add the following configuration to the "mcpServers" section of your `claude_desktop_config.json`:
+
+```
+{
+    "mcpServers": {
+        "devhub_cms_mcp": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "/YOUR/LOCAL/PATH/devhub-cms-mcp/",
+                "run",
+                "main.py"
+            ],
+            "env": {
+                "DEVHUB_API_KEY": "YOUR_KEY_HERE",
+                "DEVHUB_API_SECRET": "YOUR_SECRET_HERE",
+                "DEVHUB_BASE_URL": "https://yourbrand.cloudfrontend.net"
+            }
+        }
+    }
+}
 ```
 
 ## Configuration
