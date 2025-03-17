@@ -1,6 +1,6 @@
 # DevHub CMS MCP
 
-A Model Context Protocol (MCP) integration for managing content in the DevHub CMS system.
+A Model Context Protocol (MCP) integration for managing content in the [DevHub CMS system](https://www.devhub.com/).
 
 ## Installation
 
@@ -8,7 +8,7 @@ You will need the [uv](https://github.com/astral-sh/uv) package manager installe
 
 ### Manual configuration of Claude Desktop
 
-To use this server with the Claude Desktop app, add the following configuration to the "mcpServers" section of your `claude_desktop_config.json`:
+To use this server with the [Claude Desktop app](https://claude.ai/download), add the following configuration to the "mcpServers" section of your `claude_desktop_config.json`:
 
 ```
 {
