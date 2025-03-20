@@ -2,19 +2,11 @@
 
 [![smithery badge](https://smithery.ai/badge/@devhub/devhub-cms-mcp)](https://smithery.ai/server/@devhub/devhub-cms-mcp)
 
-A Model Context Protocol (MCP) integration for managing content in the [DevHub CMS system](https://www.devhub.com/).
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) integration for managing content in the [DevHub CMS system](https://www.devhub.com/).
 
 ## Installation
 
 You will need the [uv](https://github.com/astral-sh/uv) package manager installed on your local system.
-
-### Installing via Smithery
-
-To install DevHub CMS MCP for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@devhub/devhub-cms-mcp):
-
-```bash
-npx -y @smithery/cli install @devhub/devhub-cms-mcp --client claude
-```
 
 ### Manual configuration of Claude Desktop
 
@@ -40,11 +32,33 @@ To use this server with the [Claude Desktop app](https://claude.ai/download), ad
 
 After updating the config, restart Claude Desktop.
 
-## Manual configuration for Cursor
+### Manual configuration for Cursor
 
 This MCP can also be used in cursor with a similar configuration from above added to your [Cursor](https://www.cursor.com/) global environment or to individual projects.
 
 Examples [here](https://docs.cursor.com/context/model-context-protocol#configuring-mcp-servers)
+
+### Installing via Claude Code
+
+Claude Code's command line [supports MCP installs](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials#set-up-model-context-protocol-mcp).
+
+You can add the `devhub-cms-mcp` by updating the environment variables below
+
+```
+claude mcp add devhub-cms-mcp \
+	-e DEVHUB_API_KEY=YOUR_KEY_HERE \
+	-e DEVHUB_API_SECRET=YOUR_SECRET_HERE \
+	-e DEVHUB_BASE_URL=https://yourbrand.cloudfrontend.net \
+	-- uvx devhub-cms-mcp
+```
+
+### Installing via Smithery
+
+To install DevHub CMS MCP for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@devhub/devhub-cms-mcp):
+
+```bash
+npx -y @smithery/cli install @devhub/devhub-cms-mcp --client claude
+```
 
 ## Local development
 
